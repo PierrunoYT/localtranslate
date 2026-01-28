@@ -29,14 +29,13 @@ function App() {
 
   const checkOllamaStatus = async () => {
     try {
-      await invoke("check_ollama_status");
+      const message = await invoke<string>("check_ollama_status");
       setOllamaStatus("connected");
       setError(null);
+      console.log(message); // Log success message
     } catch (err) {
       setOllamaStatus("disconnected");
-      setError(
-        "⚠️ Ollama is not running. Please start Ollama and ensure TranslateGemma 12B is installed.\n\nTo install: ollama run translategemma:12b"
-      );
+      setError(err as string);
     }
   };
 

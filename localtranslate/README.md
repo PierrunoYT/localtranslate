@@ -2,6 +2,8 @@
 
 A minimal, local translation application built with Tauri, React, and TypeScript. Powered by **TranslateGemma 12B** for professional-quality translation that runs entirely on your machine.
 
+**Version**: 0.1.0 | **Status**: Production Ready | **License**: MIT
+
 ## Features
 
 - 🤖 **TranslateGemma 12B Integration** - State-of-the-art local translation model
@@ -65,39 +67,48 @@ npm install
 ### 4. Run the Application
 
 ```bash
-npm run tauri dev
+npm run tauri:dev
 ```
 
 You should see a green "🟢 TranslateGemma 12B Connected" badge when ready!
 
 > 📖 **Need help?** See the [detailed setup guide](../SETUP_GUIDE.md) for troubleshooting and advanced configuration.
 
+### Build Scripts
+
+- **`npm run tauri:dev`** - Normal development mode (hot reload)
+- **`npm run tauri:clean`** - Clean rebuild (clears all caches - use if changes aren't showing)
+
 ## Development
 
-Run the development server:
+**Start development mode:**
 ```bash
-npm run dev
+npm run tauri:dev
 ```
 
-Run with Tauri (desktop app):
+**If changes aren't showing (cache issues):**
 ```bash
-npm run tauri dev
-
+npm run tauri:clean  # Clears all caches and rebuilds
 ```
+
+**Common cache issues:**
+- Rust changes not updating → Delete `src-tauri/target/` folder
+- React/Vite changes not updating → Delete `node_modules/.vite/` folder
+- Both not updating → Use `npm run tauri:clean`
 
 ## Building
 
-Build the application:
-```bash
-npm run build
-```
-
-Build the Tauri desktop app:
+Build the production desktop app:
 ```bash
 npm run tauri build
 ```
 
 The built application will be in `src-tauri/target/release/`.
+
+**Build artifacts:**
+- Windows: `.exe` installer
+- macOS: `.dmg` and `.app`
+- Linux: `.deb`, `.AppImage`
 
 ## Project Structure
 
@@ -194,12 +205,22 @@ Install the model:
 ollama run translategemma:12b
 ```
 
-### Slow performance with limited RAM
-Use the smaller 4B model:
+### Slow performance / Out of memory
+Use the smaller 4B model (requires only 8GB RAM):
 ```bash
 ollama run translategemma:4b
 ```
-Then update `src-tauri/src/lib.rs` line 48 to use `translategemma:4b`
+Then update `src-tauri/src/lib.rs` line 48:
+```rust
+model: "translategemma:4b".to_string(),  // Changed from 12b
+```
+And rebuild: `npm run tauri:clean`
+
+### Changes not showing in app
+Clear all caches and rebuild:
+```bash
+npm run tauri:clean
+```
 
 See [SETUP_GUIDE.md](../SETUP_GUIDE.md) for detailed troubleshooting.
 
@@ -270,6 +291,15 @@ Contributions are welcome! Areas for improvement:
 - UI/UX enhancements
 
 Please feel free to submit a Pull Request.
+
+## Version History
+
+See [CHANGELOG.md](CHANGELOG.md) for detailed release notes.
+
+**Current Version**: 0.1.0 (2026-01-28)
+- Initial release with full TranslateGemma 12B integration
+- Local, privacy-focused AI translation
+- Professional-grade quality across 55+ languages
 
 ## License
 

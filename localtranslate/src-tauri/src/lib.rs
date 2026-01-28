@@ -101,17 +101,39 @@ async fn translate_text(
     Ok(ollama_response.message.content)
 }
 
+#[derive(Serialize, Deserialize, Debug)]
+struct OllamaTagsResponse {
+    models: Vec<OllamaModel>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct OllamaModel {
+    name: String,
+}
+
 #[tauri::command]
 async fn check_ollama_status() -> Result<String, String> {
     let client = reqwest::Client::new();
+    
+    // Check if Ollama is running
     let response = client
         .get("http://localhost:11434/api/tags")
         .send()
-        .await;
+        .await
+        .map_err(|_| "Ollama is not running. Please start Ollama with: ollama serve".to_string())?;
 
-    match response {
-        Ok(_) => Ok("Ollama is running".to_string()),
-        Err(_) => Err("Ollama is not running. Please start Ollama first.".to_string()),
+    // Check if the model is installed
+    let tags: OllamaTagsResponse = response
+        .json()
+        .await
+        .map_err(|_| "Failed to parse Ollama response".to_string())?;
+
+    let model_installed = tags.models.iter().any(|m| m.name.starts_with("translategemma:12b"));
+
+    if model_installed {
+        Ok("TranslateGemma 12B is ready".to_string())
+    } else {
+        Err("TranslateGemma 12B model not found. Please install it with:\n\nollama run translategemma:12b".to_string())
     }
 }
 

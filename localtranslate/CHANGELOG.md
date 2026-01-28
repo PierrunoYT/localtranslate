@@ -7,75 +7,73 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.2.0] - 2026-01-28
+## [0.1.0] - 2026-01-28
 
-### Added - TranslateGemma 12B Integration 🚀
-- **Full TranslateGemma 12B integration** via Ollama for local, privacy-focused translation
-- **Real translation engine** - Replaced mockup with actual AI-powered translation
-- **Ollama connection status indicator** - Live connection status badge in header (green/red)
-- **Error handling system** - Comprehensive error messages with retry functionality
-- **Async translation support** - Non-blocking translation with loading states
-- **Connection health check** - Automatic Ollama status verification on app launch
-- **Professional prompt engineering** - Uses TranslateGemma's required prompt format with language names and cultural sensitivity guidelines
+### Added
+- Initial release of LocalTranslate with **TranslateGemma 12B integration**
+- Full AI-powered translation via Ollama (local, privacy-focused)
+- Language selector dropdowns for source and target languages
+- Support for 8 languages: English, Spanish, French, German, Italian, Portuguese, Japanese, Chinese (55+ supported by model)
+- Language swap functionality
+- Dual-pane text input/output areas
+- Translate button with loading states
+- Dark mode support (automatic based on system preference)
+- Responsive design for mobile and desktop
+- Clean, modern UI with smooth transitions
+- **Connection status indicator** - Real-time Ollama/model status badge
+- **Error handling system** - Clear error messages with retry functionality
+- **Model verification** - Checks both Ollama connection and model installation
 
 ### Backend (Rust)
-- Added `reqwest` HTTP client for Ollama API communication
-- Added `tokio` async runtime for non-blocking operations
-- Implemented `translate_text` Tauri command with proper error handling
-- Implemented `check_ollama_status` command for connection verification
-- Built translation prompt template builder following TranslateGemma specifications
-- Structured JSON request/response handling for Ollama API
-- Language name mapping system for professional prompt formatting
+- Tauri 2 framework with Rust backend
+- `reqwest` HTTP client for Ollama API communication
+- `tokio` async runtime for non-blocking operations
+- `translate_text` command - Calls TranslateGemma 12B for translation
+- `check_ollama_status` command - Verifies Ollama is running and model is installed
+- Professional prompt engineering following TranslateGemma specifications
+- Comprehensive error handling for connection and API issues
 
 ### Frontend (React + TypeScript)
-- Added real-time translation state management (`isTranslating`, `error`, `ollamaStatus`)
-- Integrated Tauri API invoke system for backend communication
-- Added connection status badge component (connected/disconnected states)
-- Implemented error message display with pre-formatted text support
-- Added "Retry Connection" button for connection recovery
-- Disabled form controls during active translation
-- Added loading state feedback ("Translating with TranslateGemma 12B...")
-- Implemented automatic Ollama status check on component mount
+- React 19 + TypeScript
+- Real-time translation state management
+- Connection status badge (green=connected, red=disconnected)
+- Error message display with actionable guidance
+- "Retry Connection" button for recovery
+- Loading states during translation
+- Automatic status check on app launch
+- Form controls disabled during active translation
 
-### UI/UX Improvements
-- **Status indicator** - Visual connection status with color-coded badges
-- **Loading states** - Clear feedback during translation process
-- **Error handling** - User-friendly error messages with actionable guidance
-- **Disabled states** - Prevents multiple simultaneous translation requests
-- **Dark mode support** - Extended dark mode styles for new components
-- **Responsive design** - Status indicators adapt to screen size
+### Technical Stack
+- **Frontend**: React 19 + TypeScript + Vite 7
+- **Backend**: Rust + Tauri 2
+- **Translation Engine**: TranslateGemma 12B via Ollama
+- **API**: Ollama HTTP API (localhost:11434)
+- **Styling**: CSS3 with CSS Variables
+- **Dependencies**: reqwest@0.12, tokio@1
 
 ### Documentation
-- Created comprehensive `SETUP_GUIDE.md` with installation instructions
-- Created `QUICK_START.md` for rapid setup (5-minute guide)
-- Updated main `README.md` with TranslateGemma integration details
-- Added troubleshooting section for common issues
-- Documented model options (4B, 12B, 27B) with comparison table
-- Added architecture diagram showing data flow
-- Included performance benchmarks and system requirements
+- Comprehensive README with integration details
+- SETUP_GUIDE with installation and troubleshooting
+- Model comparison table (4B, 12B, 27B options)
+- Architecture documentation
+- Performance benchmarks
 
-### Changed
-- Updated app description to emphasize local translation capabilities
-- Enhanced language list with 55+ language support documentation
-- Modified translation button to show loading state
-- Improved header layout to accommodate status indicator
-- Added comprehensive `.gitignore` file at root level
-- Removed `package-lock.json` from git tracking (now properly ignored)
-- Improved project structure by properly ignoring build artifacts, dependencies, and temporary files
+### Build Scripts
+- `npm run tauri:dev` - Normal development mode
+- `npm run tauri:clean` - Clean rebuild (clears all caches)
 
-### Technical Details
-- **Ollama API endpoint**: `http://localhost:11434/api/chat`
-- **Model**: `translategemma:12b` (8.1GB, 128K context window)
-- **Prompt format**: Professional translator system prompt with source/target language specifications
-- **Error handling**: Connection errors, model availability, and API response parsing
-- **Dependencies**: Added `reqwest@0.12` and `tokio@1` to Cargo.toml
+### Requirements
+- Ollama must be installed and running
+- TranslateGemma 12B model must be downloaded: `ollama run translategemma:12b`
+- Minimum 16GB RAM recommended (8GB with 4B model)
+- 10GB free disk space for model
 
 ### Performance
-- First translation: ~3-5 seconds (includes model loading)
+- First translation: ~3-5 seconds (model loading)
 - Subsequent translations: ~1-2 seconds
 - Memory usage: ~8GB RAM during translation
 - Context window: 128K tokens
-- Offline capable after initial model download
+- Offline capable after model download
 
 ### Privacy & Security
 - ✅ 100% local processing - no cloud API calls
@@ -84,39 +82,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ✅ Works completely offline
 - ✅ Open source and transparent
 
-### Fixed
-- Removed placeholder/mockup translation implementation
-- Resolved translation functionality (now fully operational)
-
-## [0.1.0] - 2026-01-28
-
-### Added
-- Initial release of LocalTranslate
-- Minimal UI mockup with translation interface
-- Language selector dropdowns for source and target languages
-- Support for 8 languages: English, Spanish, French, German, Italian, Portuguese, Japanese, Chinese
-- Language swap functionality
-- Dual-pane text input/output areas
-- Translate button
-- Dark mode support (automatic based on system preference)
-- Responsive design for mobile and desktop
-- Clean, modern UI with smooth transitions
-
-### Technical
-- React 19 + TypeScript setup
-- Tauri 2 framework integration
-- Vite 7 build configuration
-- CSS3 styling with CSS variables
-- Component-based architecture
-
-### Known Issues
-- ~~Translation functionality is currently a mockup (placeholder implementation)~~ ✅ Fixed in v0.2.0
-- ~~Actual translation engine integration pending~~ ✅ Fixed in v0.2.0
-
-### Requirements
-- Ollama must be installed and running
-- TranslateGemma 12B model must be downloaded
-- Minimum 16GB RAM recommended (8GB with 4B model)
-
-[0.2.0]: https://github.com/pierr/LocalTranslate/releases/tag/v0.2.0
 [0.1.0]: https://github.com/pierr/LocalTranslate/releases/tag/v0.1.0

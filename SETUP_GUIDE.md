@@ -1,6 +1,6 @@
-# Setup Guide
+# LocalTranslate Setup Guide
 
-Quick setup for LocalTranslate with TranslateGemma 12B.
+**Version**: 0.1.0 | Quick setup for TranslateGemma 12B integration
 
 ## Requirements
 
@@ -29,10 +29,15 @@ npm install
 
 **4. Run the App**
 ```bash
-npm run tauri dev
+npm run tauri:dev
 ```
 
 Look for the green badge: **🟢 TranslateGemma 12B Connected**
+
+**If changes don't show:**
+```bash
+npm run tauri:clean  # Clears all caches
+```
 
 ## Troubleshooting
 
@@ -52,7 +57,16 @@ Use the 4B model (requires only 8GB RAM):
 ```bash
 ollama run translategemma:4b
 ```
-Then update `src-tauri/src/lib.rs` line 48 to use `translategemma:4b`
+Then update `src-tauri/src/lib.rs` line 48:
+```rust
+model: "translategemma:4b".to_string(),
+```
+And rebuild: `npm run tauri:clean`
+
+**Changes not showing?**
+```bash
+npm run tauri:clean  # Clears Rust + Vite caches
+```
 
 ## Model Options
 
@@ -62,7 +76,19 @@ Then update `src-tauri/src/lib.rs` line 48 to use `translategemma:4b`
 | 12B | 8.1GB | 16GB | Medium | Excellent ⭐ |
 | 27B | 17GB | 32GB | Slow | Best |
 
-To change models, edit `src-tauri/src/lib.rs` line 48:
-```rust
-model: "translategemma:4b".to_string(),  // or 12b, 27b
-```
+To change models:
+
+1. **Install the new model:**
+   ```bash
+   ollama run translategemma:4b  # or 27b
+   ```
+
+2. **Edit `src-tauri/src/lib.rs` line 48:**
+   ```rust
+   model: "translategemma:4b".to_string(),  // or 12b, 27b
+   ```
+
+3. **Rebuild:**
+   ```bash
+   npm run tauri:clean
+   ```
