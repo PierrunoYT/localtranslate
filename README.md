@@ -72,7 +72,7 @@ npm run tauri:dev
 
 You should see a green "🟢 TranslateGemma 12B Connected" badge when ready!
 
-> 📖 **Need help?** See the [detailed setup guide](../SETUP_GUIDE.md) for troubleshooting and advanced configuration.
+> 📖 **Need help?** See the [detailed setup guide](SETUP_GUIDE.md) for troubleshooting and advanced configuration.
 
 ### Build Scripts
 
@@ -222,7 +222,7 @@ Clear all caches and rebuild:
 npm run tauri:clean
 ```
 
-See [SETUP_GUIDE.md](../SETUP_GUIDE.md) for detailed troubleshooting.
+See [SETUP_GUIDE.md](SETUP_GUIDE.md) for detailed troubleshooting.
 
 ## Model Options
 
@@ -294,7 +294,7 @@ Please feel free to submit a [Pull Request](https://github.com/PierrunoYT/localt
 
 ## Version History
 
-See [CHANGELOG.md](CHANGELOG.md) for detailed release notes.
+See [CHANGELOG.md](localtranslate/CHANGELOG.md) for detailed release notes.
 
 **Current Version**: 0.1.0 (2026-01-28)
 - Initial release with full TranslateGemma 12B integration
@@ -312,7 +312,7 @@ TranslateGemma model is subject to the [Gemma Terms of Use](https://ai.google.de
 - [GitHub Repository](https://github.com/PierrunoYT/localtranslate)
 - [TranslateGemma Model](https://ollama.com/library/translategemma)
 - [Ollama Documentation](https://docs.ollama.com)
-- [Setup Guide](../SETUP_GUIDE.md)
+- [Setup Guide](SETUP_GUIDE.md)
 - [Tauri Documentation](https://tauri.app)
 
 ## Recommended IDE Setup
