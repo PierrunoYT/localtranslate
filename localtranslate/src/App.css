@@ -1,0 +1,243 @@
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color: #0f0f0f;
+  background-color: #f6f6f6;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f6f6f6;
+}
+
+.app-header {
+  padding: 1.5rem 2rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.app-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #0f0f0f;
+  margin: 0;
+}
+
+.translation-panel {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.language-selector {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.lang-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  background-color: #ffffff;
+  color: #0f0f0f;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.lang-select:hover {
+  border-color: #396cd8;
+}
+
+.lang-select:focus {
+  border-color: #396cd8;
+  box-shadow: 0 0 0 3px rgba(57, 108, 216, 0.1);
+}
+
+.swap-button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #0f0f0f;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.swap-button:hover {
+  border-color: #396cd8;
+  background-color: #f0f4ff;
+}
+
+.swap-button:active {
+  background-color: #e0e8ff;
+}
+
+.translation-area {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  flex: 1;
+  min-height: 400px;
+}
+
+.text-area-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.text-input,
+.text-output {
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: none;
+  background-color: #ffffff;
+  color: #0f0f0f;
+  line-height: 1.6;
+}
+
+.text-input::placeholder,
+.text-output::placeholder {
+  color: #999;
+}
+
+.text-output {
+  background-color: #fafafa;
+  color: #0f0f0f;
+}
+
+.translate-button {
+  padding: 0.875rem 2rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #396cd8;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  outline: none;
+  align-self: center;
+  min-width: 150px;
+}
+
+.translate-button:hover {
+  background-color: #2d5bb8;
+}
+
+.translate-button:active {
+  background-color: #244a9a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #f6f6f6;
+    background-color: #1a1a1a;
+  }
+
+  .app-container {
+    background-color: #1a1a1a;
+  }
+
+  .app-header {
+    background-color: #2a2a2a;
+    border-bottom-color: #3a3a3a;
+  }
+
+  .app-header h1 {
+    color: #f6f6f6;
+  }
+
+  .lang-select,
+  .swap-button {
+    background-color: #2a2a2a;
+    color: #f6f6f6;
+    border-color: #3a3a3a;
+  }
+
+  .lang-select:hover,
+  .swap-button:hover {
+    border-color: #396cd8;
+  }
+
+  .swap-button:hover {
+    background-color: #1a1a2a;
+  }
+
+  .text-area-container {
+    background-color: #2a2a2a;
+    border-color: #3a3a3a;
+  }
+
+  .text-input,
+  .text-output {
+    background-color: #2a2a2a;
+    color: #f6f6f6;
+  }
+
+  .text-output {
+    background-color: #252525;
+  }
+
+  .text-input::placeholder,
+  .text-output::placeholder {
+    color: #666;
+  }
+}
+
+@media (max-width: 768px) {
+  .translation-area {
+    grid-template-columns: 1fr;
+  }
+
+  .translation-panel {
+    padding: 1rem;
+  }
+
+  .app-header {
+    padding: 1rem;
+  }
+}
