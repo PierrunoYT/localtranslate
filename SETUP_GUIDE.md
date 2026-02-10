@@ -1,4 +1,4 @@
-# LocalTranslate Setup Guide
+# Locale Setup Guide
 
 **Version**: 0.1.0 | Quick setup for TranslateGemma 12B integration
 

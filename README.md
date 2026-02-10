@@ -1,4 +1,4 @@
-# [LocalTranslate](https://github.com/PierrunoYT/localtranslate)
+# [Locale](https://github.com/PierrunoYT/localtranslate)
 
 A minimal, local translation application built with Tauri, React, and TypeScript. Powered by **TranslateGemma 12B** for professional-quality translation that runs entirely on your machine.
 
@@ -7,7 +7,7 @@ A minimal, local translation application built with Tauri, React, and TypeScript
 ## Features
 
 - 🤖 **TranslateGemma 12B Integration** - State-of-the-art local translation model
-- 🌍 **Multi-language support** - 55+ languages (English, Spanish, French, German, Italian, Portuguese, Japanese, Chinese, and more)
+- 🌍 **120+ languages** - Full TranslateGemma support with searchable language selector
 - 🔄 **Quick language swap** functionality
 - 🟢 **Live connection status** - Status badge updates every 30s and when you return to the app
 - 🎨 **Modern UI** - Dark-first design with Plus Jakarta Sans, emerald accents, and light mode support
@@ -57,7 +57,7 @@ ollama run translategemma:12b
 
 This downloads the model (~8.1GB) and starts Ollama. The first download may take 10-30 minutes.
 
-### 3. Install LocalTranslate
+### 3. Install Locale
 
 ```bash
 git clone https://github.com/PierrunoYT/localtranslate
@@ -118,6 +118,8 @@ localtranslate/
 ├── src/                 # React frontend source
 │   ├── App.tsx         # Main application component
 │   ├── App.css         # Application styles
+│   ├── LanguageSelect.tsx  # Searchable language selector
+│   ├── languages.ts    # Full language list (120+)
 │   └── main.tsx        # React entry point
 ├── src-tauri/          # Rust backend source
 │   └── src/            # Rust source files
@@ -132,11 +134,12 @@ localtranslate/
    ollama serve
    ```
 
-2. **Launch LocalTranslate** and wait for the connection indicator (updates every 30s and when you return to the app)
+2. **Launch Locale** and wait for the connection indicator (updates every 30s and when you return to the app)
 
 3. **Translate:**
-   - Select source language (e.g., English)
-   - Select target language (e.g., Spanish)
+   - Click a language button to open the searchable dropdown
+   - Search by name or code (e.g., "spanish", "ja", "arabic")
+   - Select source and target languages
    - Enter text in the left panel
    - Click **"Translate"**
    - Translation appears in the right panel
@@ -145,17 +148,13 @@ localtranslate/
 
 ## Supported Languages
 
-**Currently Available in UI:**
-- English (en) 🇬🇧
-- Spanish (es) 🇪🇸
-- French (fr) 🇫🇷
-- German (de) 🇩🇪
-- Italian (it) 🇮🇹
-- Portuguese (pt) 🇵🇹
-- Japanese (ja) 🇯🇵
-- Chinese (zh) 🇨🇳
+**120+ languages available** with searchable dropdowns. All TranslateGemma-supported languages including:
 
-**TranslateGemma 12B supports 55+ languages** including Arabic, Russian, Korean, Hindi, Dutch, and many more. To add more languages, edit the `languages` array in `src/App.tsx`.
+- **European:** English, Spanish, French, German, Italian, Portuguese, Dutch, Swedish, Russian, Ukrainian, Polish, Czech, Greek, Turkish, and more
+- **Asian:** Chinese, Japanese, Korean, Hindi, Thai, Vietnamese, Indonesian, Malay, Persian, Arabic, Hebrew, and more
+- **Other:** Swahili, Yoruba, Zulu, Amharic, Bengali, Tamil, and 80+ additional languages
+
+Use the search box in each language selector to quickly find any language by name or code.
 
 ## Translation Quality
 
@@ -247,15 +246,7 @@ model: "translategemma:4b".to_string(),  // or 12b, 27b
 
 ### Add More Languages
 
-Edit `src/App.tsx` and add to the `languages` array:
-
-```typescript
-{ code: "ar", name: "Arabic" },
-{ code: "ru", name: "Russian" },
-{ code: "ko", name: "Korean" },
-```
-
-See [Ollama TranslateGemma docs](https://ollama.com/library/translategemma) for all supported language codes.
+Edit `src/languages.ts` to add or modify languages. The app includes all 120+ TranslateGemma-supported languages by default. See [Ollama TranslateGemma docs](https://ollama.com/library/translategemma) for the full list of supported language codes.
 
 ## Architecture
 

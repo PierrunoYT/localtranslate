@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { LanguageSelect } from "./LanguageSelect";
+import { LANGUAGES } from "./languages";
 import "./App.css";
 
 function App() {
@@ -10,17 +12,6 @@ function App() {
   const [isTranslating, setIsTranslating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [ollamaStatus, setOllamaStatus] = useState<string | null>(null);
-
-  const languages = [
-    { code: "en", name: "English" },
-    { code: "es", name: "Spanish" },
-    { code: "fr", name: "French" },
-    { code: "de", name: "German" },
-    { code: "it", name: "Italian" },
-    { code: "pt", name: "Portuguese" },
-    { code: "ja", name: "Japanese" },
-    { code: "zh", name: "Chinese" },
-  ];
 
   const checkOllamaStatus = async (silent = false) => {
     try {
@@ -88,7 +79,7 @@ function App() {
   return (
     <main className="app-container">
       <header className="app-header">
-        <h1>LocalTranslate</h1>
+        <h1>Locale</h1>
         <div className="status-indicator">
           {ollamaStatus === "connected" && (
             <span className="status-badge connected">
@@ -105,18 +96,11 @@ function App() {
 
       <div className="translation-panel">
         <div className="language-selector">
-          <select
+          <LanguageSelect
             value={sourceLang}
-            onChange={(e) => setSourceLang(e.target.value)}
-            className="lang-select"
+            onChange={(code) => setSourceLang(code)}
             disabled={isTranslating}
-          >
-            {languages.map((lang) => (
-              <option key={lang.code} value={lang.code}>
-                {lang.name}
-              </option>
-            ))}
-          </select>
+          />
 
           <button
             onClick={handleSwapLanguages}
@@ -127,18 +111,11 @@ function App() {
             ⇄
           </button>
 
-          <select
+          <LanguageSelect
             value={targetLang}
-            onChange={(e) => setTargetLang(e.target.value)}
-            className="lang-select"
+            onChange={(code) => setTargetLang(code)}
             disabled={isTranslating}
-          >
-            {languages.map((lang) => (
-              <option key={lang.code} value={lang.code}>
-                {lang.name}
-              </option>
-            ))}
-          </select>
+          />
         </div>
 
         {error && (
@@ -159,7 +136,7 @@ function App() {
         <div className="translation-area">
           <div className="text-area-wrapper">
             <span className="text-area-label">
-              {languages.find((l) => l.code === sourceLang)?.name}
+              {LANGUAGES.find((l) => l.code === sourceLang)?.name ?? sourceLang}
             </span>
             <div className="text-area-container">
               <textarea
@@ -174,7 +151,7 @@ function App() {
 
           <div className="text-area-wrapper">
             <span className="text-area-label">
-              {languages.find((l) => l.code === targetLang)?.name}
+              {LANGUAGES.find((l) => l.code === targetLang)?.name ?? targetLang}
             </span>
             <div className="text-area-container">
               <textarea

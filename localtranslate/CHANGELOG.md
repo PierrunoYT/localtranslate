@@ -5,30 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Fixed
-- **Connection status accuracy** - Status badge now updates correctly when Ollama is not running. Previously it could show "connected" when Ollama was stopped or disconnected. Added periodic health checks (every 30 seconds) and re-check when the window regains focus so the badge always reflects the current state.
-
-### Changed
-- **Modern UI redesign** - Dark-first theme with refined color palette (emerald accent), Plus Jakarta Sans typography, and language labels above text areas. Status badges now use pill-style design with status indicator dots. Light mode supported via system preference.
-
 ## [0.1.0] - 2026-01-28
 
 ### Added
-- Initial release of LocalTranslate with **TranslateGemma 12B integration**
+- Initial release of **Locale** with **TranslateGemma 12B integration**
 - Full AI-powered translation via Ollama (local, privacy-focused)
-- Language selector dropdowns for source and target languages
-- Support for 8 languages: English, Spanish, French, German, Italian, Portuguese, Japanese, Chinese (55+ supported by model)
+- **120+ languages** - All TranslateGemma-supported languages available in the UI
+- **Searchable language selector** - Search languages by name or code (e.g., "spanish", "ja") in dropdown menus
 - Language swap functionality
-- Dual-pane text input/output areas
+- Dual-pane text input/output areas with language labels
 - Translate button with loading states
-- Dark mode support (automatic based on system preference)
+- Dark mode and light mode support (automatic based on system preference)
 - Responsive design for mobile and desktop
-- Clean, modern UI with smooth transitions
-- **Connection status indicator** - Real-time Ollama/model status badge
+- **Connection status indicator** - Real-time Ollama/model status badge with periodic health checks (every 30s) and re-check on window focus
 - **Error handling system** - Clear error messages with retry functionality
 - **Model verification** - Checks both Ollama connection and model installation
+
+### Fixed
+- **Connection status accuracy** - Status badge now updates correctly when Ollama is not running. Added periodic health checks (every 30 seconds) and re-check when the window regains focus.
+
+### Changed
+- **Modern UI redesign** - Dark-first theme with Plus Jakarta Sans typography, emerald accents, pill-style status badges, and language labels above text areas. Light mode supported via system preference.
 
 ### Backend (Rust)
 - Tauri 2 framework with Rust backend
@@ -42,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Frontend (React + TypeScript)
 - React 19 + TypeScript
 - Real-time translation state management
+- Searchable language dropdown component
 - Connection status badge (green=connected, red=disconnected)
 - Error message display with actionable guidance
 - "Retry Connection" button for recovery
