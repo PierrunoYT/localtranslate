@@ -10,7 +10,7 @@ A minimal, local translation application built with Tauri, React, and TypeScript
 - 🌍 **Multi-language support** - 55+ languages (English, Spanish, French, German, Italian, Portuguese, Japanese, Chinese, and more)
 - 🔄 **Quick language swap** functionality
 - 🟢 **Live connection status** - Status badge updates every 30s and when you return to the app
-- 🎨 **Clean, minimal UI** with dark mode support
+- 🎨 **Modern UI** - Dark-first design with Plus Jakarta Sans, emerald accents, and light mode support
 - 📱 **Responsive design** for various screen sizes
 - ⚡ **Fast and lightweight** desktop application
 - 🔒 **100% Local processing** - Your data never leaves your machine
@@ -71,7 +71,7 @@ npm install
 npm run tauri:dev
 ```
 
-You should see a green "🟢 TranslateGemma 12B Connected" badge when ready!
+You should see a green "TranslateGemma 12B Connected" badge when ready!
 
 > 📖 **Need help?** See the [detailed setup guide](SETUP_GUIDE.md) for troubleshooting and advanced configuration.
 

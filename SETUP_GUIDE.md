@@ -33,7 +33,7 @@ npm install
 npm run tauri:dev
 ```
 
-Look for the green badge: **🟢 TranslateGemma 12B Connected**
+Look for the green badge: **TranslateGemma 12B Connected**
 
 **If changes don't show:**
 ```bash

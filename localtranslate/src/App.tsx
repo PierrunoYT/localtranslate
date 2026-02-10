@@ -92,12 +92,12 @@ function App() {
         <div className="status-indicator">
           {ollamaStatus === "connected" && (
             <span className="status-badge connected">
-              🟢 TranslateGemma 12B Connected
+              TranslateGemma 12B Connected
             </span>
           )}
           {ollamaStatus === "disconnected" && (
             <span className="status-badge disconnected">
-              🔴 Ollama Disconnected
+              Ollama Disconnected
             </span>
           )}
         </div>
@@ -157,27 +157,37 @@ function App() {
         )}
 
         <div className="translation-area">
-          <div className="text-area-container">
-            <textarea
-              className="text-input"
-              placeholder="Enter text to translate..."
-              value={sourceText}
-              onChange={(e) => setSourceText(e.target.value)}
-              disabled={isTranslating}
-            />
+          <div className="text-area-wrapper">
+            <span className="text-area-label">
+              {languages.find((l) => l.code === sourceLang)?.name}
+            </span>
+            <div className="text-area-container">
+              <textarea
+                className="text-input"
+                placeholder="Enter text to translate..."
+                value={sourceText}
+                onChange={(e) => setSourceText(e.target.value)}
+                disabled={isTranslating}
+              />
+            </div>
           </div>
 
-          <div className="text-area-container">
-            <textarea
-              className="text-output"
-              placeholder="Translation will appear here..."
-              value={
-                isTranslating
-                  ? "Translating with TranslateGemma 12B..."
-                  : translatedText
-              }
-              readOnly
-            />
+          <div className="text-area-wrapper">
+            <span className="text-area-label">
+              {languages.find((l) => l.code === targetLang)?.name}
+            </span>
+            <div className="text-area-container">
+              <textarea
+                className="text-output"
+                placeholder="Translation will appear here..."
+                value={
+                  isTranslating
+                    ? "Translating with TranslateGemma 12B..."
+                    : translatedText
+                }
+                readOnly
+              />
+            </div>
           </div>
         </div>
 
