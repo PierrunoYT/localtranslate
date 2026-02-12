@@ -65,17 +65,19 @@ body {
 }
 
 .info-button {
-  width: 1.75rem;
-  height: 1.75rem;
+  min-height: 1.75rem;
+  padding: 0 0.6rem;
   border: 1px solid var(--border);
-  border-radius: 50%;
+  border-radius: 9999px;
   background: var(--bg-elevated);
   color: var(--text-secondary);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.35rem;
   transition: all var(--transition);
   outline: none;
 }
@@ -106,6 +108,11 @@ body {
   color: var(--accent);
 }
 
+.status-badge.idle {
+  background: rgba(245, 158, 11, 0.16);
+  color: #f59e0b;
+}
+
 .status-badge.connected::before {
   content: "";
   width: 6px;
@@ -113,6 +120,14 @@ body {
   border-radius: 50%;
   background: var(--accent);
   animation: pulse 2s ease-in-out infinite;
+}
+
+.status-badge.idle::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f59e0b;
 }
 
 .status-badge.disconnected::before {

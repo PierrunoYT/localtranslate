@@ -28,15 +28,21 @@ function App() {
   });
   const [isTranslating, setIsTranslating] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [ollamaStatus, setOllamaStatus] = useState<string | null>(null);
+  const [ollamaStatus, setOllamaStatus] = useState<
+    "running" | "installed" | "disconnected" | null
+  >(null);
   const [showInfo, setShowInfo] = useState(false);
 
   const selectedModelLabel = getModelLabel(selectedModel);
 
   const checkOllamaStatus = async (silent = false, model = selectedModel) => {
     try {
-      await invoke<string>("check_ollama_status", { model });
-      setOllamaStatus("connected");
+      const status = await invoke<string>("check_ollama_status", { model });
+      if (status === "running") {
+        setOllamaStatus("running");
+      } else {
+        setOllamaStatus("installed");
+      }
       if (!silent) setError(null);
     } catch (err) {
       setOllamaStatus("disconnected");
@@ -82,7 +88,7 @@ function App() {
         model: selectedModel,
       });
       setTranslatedText(result);
-      setOllamaStatus("connected");
+      setOllamaStatus("running");
     } catch (err) {
       setError(err as string);
       setOllamaStatus("disconnected");
@@ -109,16 +115,22 @@ function App() {
             type="button"
             className="info-button"
             onClick={() => setShowInfo(true)}
-            title="How it works"
-            aria-label="How it works"
+            title="Open help"
+            aria-label="Open help"
           >
-            ℹ
+            <span aria-hidden="true">ℹ</span>
+            <span>Help</span>
           </button>
         </div>
         <div className="status-indicator">
-          {ollamaStatus === "connected" && (
+          {ollamaStatus === "running" && (
             <span className="status-badge connected">
-              {selectedModelLabel} Connected
+              {selectedModelLabel} Running
+            </span>
+          )}
+          {ollamaStatus === "installed" && (
+            <span className="status-badge idle">
+              {selectedModelLabel} Installed (Idle)
             </span>
           )}
           {ollamaStatus === "disconnected" && (
@@ -249,11 +261,20 @@ function App() {
               <p>Locale runs translation entirely on your machine using:</p>
               <ul>
                 <li><strong>Ollama</strong> – local AI runtime (install from ollama.com)</li>
-                <li><strong>{selectedModelLabel}</strong> – run <code>ollama run {selectedModel}</code> to install</li>
+                <li><strong>TranslateGemma models</strong> – choose from:
+                  <ul>
+                    {MODEL_OPTIONS.map((model) => (
+                      <li key={model.value}>
+                        <strong>{model.label}</strong> – <code>ollama run {model.value}</code>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
               </ul>
 
               <h3>Using Locale</h3>
               <ol>
+                <li>Select a model from the <strong>Model</strong> dropdown</li>
                 <li>Select source and target languages from the dropdowns (search by name or code)</li>
                 <li>Enter text in the left panel</li>
                 <li>Click <strong>Translate</strong></li>
@@ -261,7 +282,19 @@ function App() {
               </ol>
 
               <h3>Connection Status</h3>
-              <p>The green badge means Ollama is running and the selected model is ready. If it shows disconnected, start Ollama with <code>ollama serve</code> and ensure the selected model is installed.</p>
+              <ul>
+                <li><strong>Running</strong> (green): the selected model is loaded and ready</li>
+                <li><strong>Installed (Idle)</strong> (amber): model is installed but not currently loaded</li>
+                <li><strong>Ollama Disconnected</strong> (red): Ollama is not reachable</li>
+              </ul>
+
+              <h3>Quick Troubleshooting</h3>
+              <ul>
+                <li>Start Ollama: <code>ollama serve</code></li>
+                <li>Install a model: <code>ollama run [model-name]</code></li>
+                <li>See loaded models: <code>ollama ps</code></li>
+                <li>See installed models: <code>ollama list</code></li>
+              </ul>
 
               <h3>Privacy</h3>
               <p>All translation happens locally. Your text never leaves your machine.</p>

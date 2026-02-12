@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-02-12
+
+### Added
+- **Enhanced info modal** - Now displays all three TranslateGemma models (4B, 12B, 27B) with installation commands for each
+- **Improved help button** - Info button now shows "Help" text alongside the info icon for better discoverability
+- **Quick troubleshooting section** - Added dedicated troubleshooting commands in the help modal (ollama serve, ollama ps, ollama list)
+
+### Changed
+- **Three-state connection status** - Status badge now distinguishes between:
+  - "Running" (green) - Model is loaded in memory and ready
+  - "Installed (Idle)" (amber) - Model is installed but not currently loaded
+  - "Ollama Disconnected" (red) - Ollama is not reachable
+- **More informative status messages** - Changed "Connected" to "Running" for clarity
+- **Better usage instructions** - Info modal now includes model selection as the first step
+
+### Backend (Rust)
+- Enhanced `check_ollama_status` to return "running" or "installed" status by checking `/api/ps` endpoint
+- Improved model state detection to differentiate between installed and actively loaded models
+
 ## [0.1.3] - 2026-02-12
 
 ### Added
@@ -115,6 +134,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ✅ Works completely offline
 - ✅ Open source and transparent
 
+[0.1.4]: https://github.com/PierrunoYT/localtranslate/releases/tag/v0.1.4
 [0.1.3]: https://github.com/PierrunoYT/localtranslate/releases/tag/v0.1.3
 [0.1.2]: https://github.com/PierrunoYT/localtranslate/releases/tag/v0.1.2
 [0.1.1]: https://github.com/PierrunoYT/localtranslate/releases/tag/v0.1.1

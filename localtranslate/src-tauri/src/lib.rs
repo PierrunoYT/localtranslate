@@ -272,6 +272,11 @@ struct OllamaTagsResponse {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+struct OllamaPsResponse {
+    models: Vec<OllamaModel>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 struct OllamaModel {
     name: String,
 }
@@ -299,13 +304,26 @@ async fn check_ollama_status(model: Option<String>) -> Result<String, String> {
         .iter()
         .any(|m| m.name.starts_with(&selected_model));
 
-    if model_installed {
-        Ok(format!("{} is ready", selected_model))
-    } else {
+    if !model_installed {
         Err(format!(
             "{} model not found. Please install it with:\n\nollama run {}",
             selected_model, selected_model
         ))
+    } else {
+        // Distinguish "installed" from "actively running in memory"
+        let model_running = match client.get("http://localhost:11434/api/ps").send().await {
+            Ok(ps_response) => match ps_response.json::<OllamaPsResponse>().await {
+                Ok(ps) => ps.models.iter().any(|m| m.name.starts_with(&selected_model)),
+                Err(_) => false,
+            },
+            Err(_) => false,
+        };
+
+        if model_running {
+            Ok("running".to_string())
+        } else {
+            Ok("installed".to_string())
+        }
     }
 }
 
