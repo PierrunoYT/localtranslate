@@ -242,6 +242,41 @@ body {
   gap: 1.5rem;
 }
 
+.model-selector {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.model-selector label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.model-selector select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-family: inherit;
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.model-selector select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-muted);
+}
+
+.model-selector select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .language-selector {
   display: flex;
   align-items: center;
@@ -594,6 +629,14 @@ body {
 }
 
 @media (max-width: 768px) {
+  .model-selector {
+    justify-content: stretch;
+  }
+
+  .model-selector select {
+    flex: 1;
+  }
+
   .translation-area {
     grid-template-columns: 1fr;
     min-height: 520px;

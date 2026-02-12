@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-02-12
+
+### Added
+- **Model switcher** - Select TranslateGemma `4b`, `12b`, or `27b` directly in the UI
+- **Model preference persistence** - Selected model is saved locally and restored on app launch
+
+### Changed
+- **Dynamic model usage** - Translation requests and model health checks now use the selected model instead of a hardcoded `12b`
+- **Status and helper text** - Connection badge, loading text, and setup instructions now reflect the selected model
+
+### Backend (Rust)
+- `translate_text` now accepts an optional `model` parameter
+- `check_ollama_status` now accepts an optional `model` parameter
+- Added allowlist validation for supported model tags: `translategemma:4b`, `translategemma:12b`, `translategemma:27b`
+
 ## [0.1.2] - 2026-02-10
 
 ### Changed
@@ -100,6 +115,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ✅ Works completely offline
 - ✅ Open source and transparent
 
+[0.1.3]: https://github.com/PierrunoYT/localtranslate/releases/tag/v0.1.3
 [0.1.2]: https://github.com/PierrunoYT/localtranslate/releases/tag/v0.1.2
 [0.1.1]: https://github.com/PierrunoYT/localtranslate/releases/tag/v0.1.1
 [0.1.0]: https://github.com/PierrunoYT/localtranslate/releases/tag/v0.1.0

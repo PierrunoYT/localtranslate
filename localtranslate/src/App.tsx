@@ -4,19 +4,38 @@ import { LanguageSelect } from "./LanguageSelect";
 import { LANGUAGES } from "./languages";
 import "./App.css";
 
+const MODEL_OPTIONS = [
+  { value: "translategemma:4b", label: "TranslateGemma 4B" },
+  { value: "translategemma:12b", label: "TranslateGemma 12B" },
+  { value: "translategemma:27b", label: "TranslateGemma 27B" },
+] as const;
+
+const DEFAULT_MODEL = MODEL_OPTIONS[0].value;
+
+const getModelLabel = (model: string) =>
+  MODEL_OPTIONS.find((option) => option.value === model)?.label ?? model;
+
 function App() {
   const [sourceText, setSourceText] = useState("");
   const [translatedText, setTranslatedText] = useState("");
   const [sourceLang, setSourceLang] = useState("en");
   const [targetLang, setTargetLang] = useState("es");
+  const [selectedModel, setSelectedModel] = useState<string>(() => {
+    const savedModel = localStorage.getItem("locale.selectedModel");
+    return MODEL_OPTIONS.some((option) => option.value === savedModel)
+      ? (savedModel as string)
+      : DEFAULT_MODEL;
+  });
   const [isTranslating, setIsTranslating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [ollamaStatus, setOllamaStatus] = useState<string | null>(null);
   const [showInfo, setShowInfo] = useState(false);
 
-  const checkOllamaStatus = async (silent = false) => {
+  const selectedModelLabel = getModelLabel(selectedModel);
+
+  const checkOllamaStatus = async (silent = false, model = selectedModel) => {
     try {
-      await invoke<string>("check_ollama_status");
+      await invoke<string>("check_ollama_status", { model });
       setOllamaStatus("connected");
       if (!silent) setError(null);
     } catch (err) {
@@ -25,9 +44,8 @@ function App() {
     }
   };
 
-  // Check on mount, periodically (every 30s), and when window regains focus
   useEffect(() => {
-    checkOllamaStatus();
+    checkOllamaStatus(false, selectedModel);
     const interval = setInterval(() => checkOllamaStatus(true), 30_000);
     const onFocus = () => checkOllamaStatus(true);
     window.addEventListener("focus", onFocus);
@@ -35,7 +53,11 @@ function App() {
       clearInterval(interval);
       window.removeEventListener("focus", onFocus);
     };
-  }, []);
+  }, [selectedModel]);
+
+  useEffect(() => {
+    localStorage.setItem("locale.selectedModel", selectedModel);
+  }, [selectedModel]);
 
   const handleTranslate = async () => {
     if (!sourceText.trim()) {
@@ -57,6 +79,7 @@ function App() {
         sourceLang,
         targetLang,
         text: sourceText,
+        model: selectedModel,
       });
       setTranslatedText(result);
       setOllamaStatus("connected");
@@ -95,7 +118,7 @@ function App() {
         <div className="status-indicator">
           {ollamaStatus === "connected" && (
             <span className="status-badge connected">
-              TranslateGemma 12B Connected
+              {selectedModelLabel} Connected
             </span>
           )}
           {ollamaStatus === "disconnected" && (
@@ -107,6 +130,22 @@ function App() {
       </header>
 
       <div className="translation-panel">
+        <div className="model-selector">
+          <label htmlFor="model-select">Model</label>
+          <select
+            id="model-select"
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+            disabled={isTranslating}
+          >
+            {MODEL_OPTIONS.map((model) => (
+              <option key={model.value} value={model.value}>
+                {model.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div className="language-selector">
           <LanguageSelect
             value={sourceLang}
@@ -172,7 +211,7 @@ function App() {
                   placeholder="Translation will appear here..."
                   value={
                     isTranslating
-                      ? "Translating with TranslateGemma 12B..."
+                      ? `Translating with ${selectedModelLabel}...`
                       : translatedText
                   }
                   readOnly
@@ -210,7 +249,7 @@ function App() {
               <p>Locale runs translation entirely on your machine using:</p>
               <ul>
                 <li><strong>Ollama</strong> – local AI runtime (install from ollama.com)</li>
-                <li><strong>TranslateGemma 12B</strong> – run <code>ollama run translategemma:12b</code> to install</li>
+                <li><strong>{selectedModelLabel}</strong> – run <code>ollama run {selectedModel}</code> to install</li>
               </ul>
 
               <h3>Using Locale</h3>
@@ -222,7 +261,7 @@ function App() {
               </ol>
 
               <h3>Connection Status</h3>
-              <p>The green badge means Ollama is running and TranslateGemma is ready. If it shows disconnected, start Ollama with <code>ollama serve</code> and ensure the model is installed.</p>
+              <p>The green badge means Ollama is running and the selected model is ready. If it shows disconnected, start Ollama with <code>ollama serve</code> and ensure the selected model is installed.</p>
 
               <h3>Privacy</h3>
               <p>All translation happens locally. Your text never leaves your machine.</p>

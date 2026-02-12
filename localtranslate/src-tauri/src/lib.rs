@@ -1,5 +1,26 @@
 use serde::{Deserialize, Serialize};
 
+const DEFAULT_MODEL: &str = "translategemma:4b";
+const SUPPORTED_MODELS: [&str; 3] = ["translategemma:4b", "translategemma:12b", "translategemma:27b"];
+
+fn resolve_model(model: Option<String>) -> Result<String, String> {
+    let requested_model = model
+        .as_deref()
+        .map(str::trim)
+        .filter(|value| !value.is_empty())
+        .unwrap_or(DEFAULT_MODEL);
+
+    if SUPPORTED_MODELS.contains(&requested_model) {
+        Ok(requested_model.to_string())
+    } else {
+        Err(format!(
+            "Unsupported model '{}'. Supported models: {}",
+            requested_model,
+            SUPPORTED_MODELS.join(", ")
+        ))
+    }
+}
+
 // Language name mapping for the prompt template (TranslateGemma supported languages)
 fn get_language_name(code: &str) -> &str {
     match code {
@@ -195,17 +216,20 @@ async fn translate_text(
     source_lang: String,
     target_lang: String,
     text: String,
+    model: Option<String>,
 ) -> Result<String, String> {
     if text.trim().is_empty() {
         return Err("Text cannot be empty".to_string());
     }
+
+    let selected_model = resolve_model(model)?;
 
     // Build the prompt using TranslateGemma's required format
     let prompt = build_translation_prompt(&source_lang, &target_lang, &text);
 
     // Create the request to Ollama API
     let request_body = OllamaRequest {
-        model: "translategemma:12b".to_string(),
+        model: selected_model.clone(),
         messages: vec![OllamaMessage {
             role: "user".to_string(),
             content: prompt,
@@ -222,15 +246,16 @@ async fn translate_text(
         .await
         .map_err(|e| {
             format!(
-                "Failed to connect to Ollama. Please ensure Ollama is running and TranslateGemma 12B is installed.\nError: {}",
-                e
+                "Failed to connect to Ollama. Please ensure Ollama is running and '{}' is installed.\nError: {}",
+                selected_model, e
             )
         })?;
 
     if !response.status().is_success() {
         return Err(format!(
-            "Ollama API returned error: {}. Make sure 'translategemma:12b' model is installed.",
-            response.status()
+            "Ollama API returned error: {}. Make sure '{}' model is installed.",
+            response.status(),
+            selected_model
         ));
     }
 
@@ -252,7 +277,8 @@ struct OllamaModel {
 }
 
 #[tauri::command]
-async fn check_ollama_status() -> Result<String, String> {
+async fn check_ollama_status(model: Option<String>) -> Result<String, String> {
+    let selected_model = resolve_model(model)?;
     let client = reqwest::Client::new();
     
     // Check if Ollama is running
@@ -268,12 +294,18 @@ async fn check_ollama_status() -> Result<String, String> {
         .await
         .map_err(|_| "Failed to parse Ollama response".to_string())?;
 
-    let model_installed = tags.models.iter().any(|m| m.name.starts_with("translategemma:12b"));
+    let model_installed = tags
+        .models
+        .iter()
+        .any(|m| m.name.starts_with(&selected_model));
 
     if model_installed {
-        Ok("TranslateGemma 12B is ready".to_string())
+        Ok(format!("{} is ready", selected_model))
     } else {
-        Err("TranslateGemma 12B model not found. Please install it with:\n\nollama run translategemma:12b".to_string())
+        Err(format!(
+            "{} model not found. Please install it with:\n\nollama run {}",
+            selected_model, selected_model
+        ))
     }
 }
 

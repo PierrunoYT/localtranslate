@@ -1,12 +1,12 @@
 # [Locale](https://github.com/PierrunoYT/localtranslate)
 
-A minimal, local translation application built with Tauri, React, and TypeScript. Powered by **TranslateGemma 12B** for professional-quality translation that runs entirely on your machine.
+A minimal, local translation application built with Tauri, React, and TypeScript. Powered by **TranslateGemma** (4B/12B/27B) for professional-quality translation that runs entirely on your machine.
 
-**Version**: 0.1.2 | **Status**: Production Ready | **License**: MIT
+**Version**: 0.1.3 | **Status**: Production Ready | **License**: MIT
 
 ## Features
 
-- 🤖 **TranslateGemma 12B Integration** - State-of-the-art local translation model
+- 🤖 **Runtime model switch** - Choose TranslateGemma 4B, 12B, or 27B directly in the UI
 - 🌍 **120+ languages** - Full TranslateGemma support with searchable language selector
 - 🔄 **Quick language swap** functionality
 - 🟢 **Live connection status** - Status badge updates every 30s and when you return to the app
@@ -24,7 +24,7 @@ A minimal, local translation application built with Tauri, React, and TypeScript
 - **Framework**: Tauri 2
 - **Build Tool**: Vite 7
 - **Styling**: CSS3 with CSS Variables
-- **Translation Engine**: TranslateGemma 12B via Ollama
+- **Translation Engine**: TranslateGemma via Ollama (4B/12B/27B)
 - **Backend**: Rust with async HTTP client
 
 ## Prerequisites
@@ -33,7 +33,7 @@ A minimal, local translation application built with Tauri, React, and TypeScript
 - **Node.js** (v18 or higher)
 - **Rust** (latest stable)
 - **Ollama** - Download from [ollama.com](https://ollama.com/download)
-- **TranslateGemma 12B model** - Install via Ollama (see setup below)
+- **At least one TranslateGemma model** - Install via Ollama (see setup below)
 
 ### System Requirements
 - **RAM**: 16GB+ recommended (8GB minimum with 4B model)
@@ -50,13 +50,13 @@ Download and install Ollama from [ollama.com](https://ollama.com/download), then
 ollama --version
 ```
 
-### 2. Install TranslateGemma 12B
+### 2. Install a TranslateGemma model
 
 ```bash
-ollama run translategemma:12b
+ollama run translategemma:4b
 ```
 
-This downloads the model (~8.1GB) and starts Ollama. The first download may take 10-30 minutes.
+This downloads the selected model and starts Ollama. `4b` is the lightest option; `12b` and `27b` are available for higher quality.
 
 ### 3. Install Locale
 
@@ -72,7 +72,7 @@ npm install
 npm run tauri:dev
 ```
 
-You should see a green "TranslateGemma 12B Connected" badge when ready!
+You should see a green "<selected model> Connected" badge when ready.
 
 > 📖 **Need help?** See the [detailed setup guide](SETUP_GUIDE.md) for troubleshooting and advanced configuration.
 
@@ -200,22 +200,18 @@ Start Ollama in a terminal:
 ollama serve
 ```
 
-### "translategemma:12b model not found"
-Install the model:
-```bash
-ollama run translategemma:12b
-```
-
-### Slow performance / Out of memory
-Use the smaller 4B model (requires only 8GB RAM):
+### "translategemma:<size> model not found"
+Install the model selected in the app:
 ```bash
 ollama run translategemma:4b
 ```
-Then update `src-tauri/src/lib.rs` line 48:
-```rust
-model: "translategemma:4b".to_string(),  // Changed from 12b
+
+### Slow performance / Out of memory
+Use the model selector in the app and switch to the smaller 4B model (requires only 8GB RAM):
+```bash
+ollama run translategemma:4b
 ```
-And rebuild: `npm run tauri:clean`
+No code changes are required.
 
 ### Changes not showing in app
 Clear all caches and rebuild:
@@ -233,17 +229,18 @@ See [SETUP_GUIDE.md](SETUP_GUIDE.md) for detailed troubleshooting.
 | **12B** | 8.1GB | 16GB | Fast | Excellent ⭐ |
 | **27B** | 17GB | 32GB | Slower | Best |
 
-**Default:** 12B (recommended balance of speed and quality)
+**Default:** 4B (fastest and most accessible)
 
 ## Advanced Configuration
 
 ### Change Translation Model
 
-Edit `src-tauri/src/lib.rs` (line 48):
+Use the **Model** dropdown above the language selectors to switch between:
+- `translategemma:4b`
+- `translategemma:12b`
+- `translategemma:27b`
 
-```rust
-model: "translategemma:4b".to_string(),  // or 12b, 27b
-```
+Your selection is saved locally and reused when you reopen the app.
 
 ### Add More Languages
 
@@ -270,7 +267,7 @@ Edit `src/languages.ts` to add or modify languages. The app includes all 120+ Tr
          │
 ┌────────▼────────┐
 │ TranslateGemma  │  AI Translation Model
-│      12B        │  (Runs locally on your machine)
+│ 4B/12B/27B      │  (Runs locally on your machine)
 └─────────────────┘
 ```
 
@@ -289,10 +286,10 @@ Please feel free to submit a [Pull Request](https://github.com/PierrunoYT/localt
 
 See [CHANGELOG.md](localtranslate/CHANGELOG.md) for detailed release notes.
 
-**Current Version**: 0.1.0 (2026-01-28)
-- Initial release with full TranslateGemma 12B integration
-- Local, privacy-focused AI translation
-- Professional-grade quality across 55+ languages
+**Current Version**: 0.1.3 (2026-02-12)
+- Runtime model switcher for TranslateGemma 4B/12B/27B
+- Saved model preference and dynamic model-aware status/error messaging
+- Continued local, privacy-focused translation experience
 
 ## License
 
